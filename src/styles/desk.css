@@ -50,12 +50,9 @@
 .box { --w: 38; --h: 40; --n: 4; background-image: url(/sprites/toolbox.png); }
 .obj-tools:is(:hover, :focus-visible, :active) .box { --from: 0px; --to: calc(var(--fw) * -3); animation: play .3s steps(3) forwards; }
 
-/* KazooKat_ stands on the desk, waves now and then, and keeps waving while an object is active */
+/* KazooKat_ stands still on the desk and points at whichever object is selected */
 .me-col { align-self: flex-end; margin-bottom: calc(var(--label-h) + var(--u) * 5); margin-right: calc(var(--u) * -6); }
-.scene .me { animation: idlewave 5s infinite; }
-@keyframes idlewave { 0%, 88% { background-position-x: 0; } 89%, 97% { background-position-x: calc(var(--fw) * -1); } }
-.items:has(.obj:is(:hover, :focus-visible, :active)) .me { animation: wave .5s steps(1) infinite; }
-@keyframes wave { 0% { background-position-x: calc(var(--fw) * -1); } 50% { background-position-x: 0; } }
+.items:has(.obj:is(:hover, :focus-visible, :active)) .me { background-position-x: calc(var(--fw) * -1); }
 
 /* The desk is about 189 art pixels wide plus labels, so the pixel size steps down with the window. */
 @media (max-width: 1199px) { .scene { --u: 5px; } }

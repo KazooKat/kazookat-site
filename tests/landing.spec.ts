@@ -41,12 +41,31 @@ test('gamepad cycles its 4 loop frames and only moves in whole art pixels', asyn
   for (const y of ys) expect(Math.abs(y) % 6).toBe(0);
 });
 
-test('character waves while an object is hovered', async ({ page }) => {
+test('character stands still when nothing is selected', async ({ page }) => {
   await page.goto('/');
-  await page.hover('.obj-games');
+  const anims = await page.locator('.me').evaluate((el) => el.getAnimations().length);
+  expect(anims).toBe(0);
   const seen = new Set<string>();
-  for (let i = 0; i < 12; i++) { seen.add(await bgX(page, '.me')); await page.waitForTimeout(60); }
-  expect([...seen].sort()).toEqual(['-174px', '0px']); // 29 art px * 6px
+  for (let i = 0; i < 10; i++) { seen.add(await bgX(page, '.me')); await page.waitForTimeout(100); }
+  expect([...seen]).toEqual(['0px']);
+});
+
+for (const obj of ['.obj-data', '.obj-games', '.obj-tools']) {
+  test(`character points and holds still while ${obj} is selected`, async ({ page }) => {
+    await page.goto('/');
+    await page.hover(obj);
+    const seen = new Set<string>();
+    for (let i = 0; i < 10; i++) { seen.add(await bgX(page, '.me')); await page.waitForTimeout(80); }
+    expect([...seen]).toEqual(['-174px']); // pointing frame (29 art px * 6px), no flicker back
+  });
+}
+
+test('character points while an object has keyboard focus', async ({ page }) => {
+  await page.goto('/');
+  await page.focus('.obj-tools');
+  const seen = new Set<string>();
+  for (let i = 0; i < 10; i++) { seen.add(await bgX(page, '.me')); await page.waitForTimeout(80); }
+  expect([...seen]).toEqual(['-174px']);
 });
 
 test('enter on the focused gamepad opens /games', async ({ page }) => {
