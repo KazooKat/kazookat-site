@@ -2,7 +2,7 @@
 pixel grid, so animation never rotates or scales anything."""
 from PIL import Image
 
-K = "#2a2420"
+K = "#101738"  # ink outline, matches --ink
 
 
 def rgba(c):
@@ -81,16 +81,16 @@ HEIGHTS = [5, 8, 6, 10, 12]
 
 def monitor_frame(grow, trend):
     cv = Canvas(MON_W, MON_H)
-    shade(cv, rr(9, 26, 26, 30, 2), "#efe4d2", "#fffaf0", "#cbb89c")
-    shade(cv, rr(15, 23, 20, 27, 0), "#d8c8ae", None, "#bba78a")
-    shade(cv, rr(0, 0, 35, 24, 3), "#efe4d2", "#fffaf0", "#cbb89c")
+    shade(cv, rr(9, 26, 26, 30, 2), "#e4e7ef", "#ffffff", "#b9bfcd")
+    shade(cv, rr(15, 23, 20, 27, 0), "#ccd1dc", None, "#a9b0c0")
+    shade(cv, rr(0, 0, 35, 24, 3), "#e4e7ef", "#ffffff", "#b9bfcd")
     for (x, y) in rr(4, 3, 31, 20, 1):
         cv.px(x, y, "#132433")
     for (x, y) in rr(5, 4, 30, 19, 0):
         cv.px(x, y, "#1d3346" if y % 2 == 0 else "#1a2e40")
     for x, y in [(6, 5), (7, 5), (6, 6)]:
         cv.px(x, y, "#2c4a64")
-    cv.rect(15, 22, 20, 22, "#cbb89c")
+    cv.rect(15, 22, 20, 22, "#b9bfcd")
     cv.px(31, 22, "#3f6b4c")  # LED socket, lit by its own overlay
     tops = []
     for i, h in enumerate(HEIGHTS):
@@ -136,14 +136,14 @@ def pad_frame(pressed=None, sparks=0):
     o = 8
     m = rr(3, 2, 36, 13, 4, o) | rr(0, 6, 14, 21, 5, o) | rr(25, 6, 39, 21, 5, o)
     m = {(x, y) for (x, y) in m if y < PAD_H}
-    shade(cv, m, "#8b7fd1", "#b3a9ef", "#6a5eb0")
+    shade(cv, m, "#3550b0", "#5a74d0", "#233a96")
     for (x, y) in rr(4, 7, 14, 17, 3, o) | rr(26, 6, 36, 16, 3, o):
         if cv.p.get((x, y)) != K:
-            cv.px(x, y, "#7a6ec4")
-    cv.rect(16, 10 + o, 18, 10 + o, "#4a3f8f")
-    cv.rect(21, 10 + o, 23, 10 + o, "#4a3f8f")
+            cv.px(x, y, "#2c45a6")
+    cv.rect(16, 10 + o, 18, 10 + o, "#13225e")
+    cv.rect(21, 10 + o, 23, 10 + o, "#13225e")
     for x, y in [(19, 14), (20, 14), (19, 13), (20, 13), (18, 12), (21, 12)]:
-        cv.px(x, y, "#e8833a")
+        cv.px(x, y, "#f7b85b")
     cv.rect(8, 8 + o, 10, 16 + o, K)
     cv.rect(5, 11 + o, 13, 13 + o, K)
     cv.rect(9, 9 + o, 9, 10 + o, "#4a4038")
@@ -154,7 +154,7 @@ def pad_frame(pressed=None, sparks=0):
         else:
             cv.rect(x, y, x + 1, y + 1, c)
             cv.px(x, y, "#fffaf0")
-            cv.rect(x, y + 2, x + 1, y + 2, "#4a3f8f")
+            cv.rect(x, y + 2, x + 1, y + 2, "#13225e")
     if sparks == 1:
         sparkle(cv, 6, 3, False); sparkle(cv, 33, 5, True)
     elif sparks == 2:
@@ -186,12 +186,12 @@ def tools(cv, lift):
 
 def box_body(cv, open_):
     o = TOP
-    shade(cv, rr(1, 14, 36, 29, 2, o), "#d9553b", "#ef7a5e", "#a83d29")
+    shade(cv, rr(1, 14, 36, 29, 2, o), "#9c2a24", "#c2453b", "#6e1a16")
     if open_:
-        cv.rect(3, 15 + o, 34, 16 + o, "#5a2318")   # dark inside of the box
-        cv.rect(3, 17 + o, 34, 17 + o, "#a83d29")
-    cv.rect(3, 19 + o, 34, 19 + o, "#a83d29")
-    cv.rect(3, 20 + o, 34, 20 + o, "#ef7a5e")
+        cv.rect(3, 15 + o, 34, 16 + o, "#39110f")   # dark inside of the box
+        cv.rect(3, 17 + o, 34, 17 + o, "#6e1a16")
+    cv.rect(3, 19 + o, 34, 19 + o, "#6e1a16")
+    cv.rect(3, 20 + o, 34, 20 + o, "#c2453b")
     shade(cv, rr(16, 14, 21, 18, 1, o), "#ffd166", "#ffe6a3", "#c99a2e")
     cv.px(18, 16 + o, K); cv.px(19, 16 + o, K)
 
@@ -205,14 +205,14 @@ def box_frame(stage):
         box_body(cv, False)
         lo = TOP - lift
         shade(cv, rr(12, 3, 25, 10, 2, lo) - rr(15, 6, 22, 10, 0, lo), "#b8c2cc", "#e2e8ee", "#8996a3")
-        shade(cv, rr(0, 9, 37, 15, 2, lo), "#d9553b", "#ef7a5e", "#a83d29")
+        shade(cv, rr(0, 9, 37, 15, 2, lo), "#9c2a24", "#c2453b", "#6e1a16")
     else:
         # lid flipped back: we see its inside face standing up behind the box
         panel = rr(1, 3, 36, 14, 2, TOP - 0)
         panel = {(x, y) for (x, y) in panel if y <= TOP + 14}
-        shade(cv, panel, "#b8472f", "#d9553b", "#8e3423")
-        cv.rect(4, TOP + 6, 33, TOP + 11, "#9c3c27")          # inner recess
-        cv.rect(4, TOP + 6, 33, TOP + 6, "#7a2e1e")
+        shade(cv, panel, "#7d1e19", "#9c2a24", "#4e1512")
+        cv.rect(4, TOP + 6, 33, TOP + 11, "#641b17")          # inner recess
+        cv.rect(4, TOP + 6, 33, TOP + 6, "#491613")
         tools(cv, 6 if stage == 2 else 9)
         box_body(cv, True)
     return cv.image()

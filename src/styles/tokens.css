@@ -1,16 +1,19 @@
 :root {
-  --ink: #2a2420;
-  --paper: #f4efe6;
-  --paper-2: #efe6d6;
-  --card: #fffaf0;
-  --dot: #e3d7c3;
-  --muted: #6e6357;
-  --accent: #e8833a;
-  --accent-ink: #9a4a12;
-  --tag: #e9dfcf;
-  --wood: #c08a5a;
-  --wood-hi: #d9a574;
-  --wood-sh: #9c6b40;
+  /* Colours come from the KazooKat_ skin: mask white, jacket navy, plaid maroon, zipper gold. */
+  --ink: #101738;
+  --paper: #eef0f5;
+  --paper-2: #e1e5ef;
+  --card: #fbfcff;
+  --dot: #d5dae7;
+  --muted: #4c5470;
+  --accent: #a8302a; /* decorative: shadows, underlines */
+  --accent-ink: #7d1e19; /* text and buttons: 8.9:1 on paper, 9.9:1 under white text */
+  --gold: #f7b85b; /* only on navy or as a fill under navy text; 1.5:1 on paper */
+  --navy: #233a96;
+  --tag: #dde2ee;
+  --wood: #b8945f; /* oak planks */
+  --wood-hi: #d1b07a;
+  --wood-sh: #8a6b40;
   --u: 6px; /* one art pixel; always a whole number of screen pixels */
   --pixel-font: "Pixelify Sans", ui-monospace, monospace;
 }
