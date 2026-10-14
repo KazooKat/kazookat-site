@@ -1,9 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import Desk from '../components/Desk.astro';
+import { byCategory } from '../lib/projects';
 
-// Hard-coded until the project collection exists (Task 5 reads these from it).
+// Hard-coded until the category pages exist (Task 5 derives these from the collection).
 const counts = { data: '7 projects', games: '3 projects · 2 on Steam', tools: '3 projects' };
+await byCategory('data'); // loads the collection so schema errors fail the build now
 ---
 <Base title="KazooKat" description="KazooKat's portfolio: data and finance projects, games on Steam, and tools.">
   <Desk counts={counts} />
