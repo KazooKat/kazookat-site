@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import CaseFile from './CaseFile.astro';
+import { byCategory, type Category } from '../lib/projects';
+
+interface Props { cat: Category; title: string; note: string; description: string }
+const { cat, title, note, description } = Astro.props;
+const entries = await byCategory(cat);
+---
+<Base title={`${title} · KazooKat`} description={description}>
+  <Header current={cat} />
+  <main class="cat">
+    <div class="intro">
+      <h1 class="px">{title}</h1>
+      <p>{note}</p>
+    </div>
+    {entries.map((entry, i) => <CaseFile entry={entry} flip={i % 2 === 1} eager={i === 0} />)}
+  </main>
+</Base>
+
+<style>
+  .cat { width: 100%; max-width: 1100px; margin: 0 auto; padding: 8px 16px 40px; flex: 1; }
+  .intro { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; padding: 28px 0 8px; border-bottom: 3px dashed var(--dot); }
+  h1 { margin: 0; font-size: clamp(36px, 6vw, 56px); line-height: 1; text-shadow: .06em .06em 0 var(--accent); }
+  .intro p { margin: 0; color: var(--muted); }
+</style>

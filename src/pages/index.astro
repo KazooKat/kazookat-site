@@ -3,9 +3,13 @@ import Base from '../layouts/Base.astro';
 import Desk from '../components/Desk.astro';
 import { byCategory } from '../lib/projects';
 
-// Hard-coded until the category pages exist (Task 5 derives these from the collection).
-const counts = { data: '7 projects', games: '3 projects · 2 on Steam', tools: '3 projects' };
-await byCategory('data'); // loads the collection so schema errors fail the build now
+const [data, games, tools] = await Promise.all([byCategory('data'), byCategory('games'), byCategory('tools')]);
+const onSteam = games.filter((g) => g.data.links.some((l) => l.url.includes('store.steampowered.com'))).length;
+const counts = {
+  data: `${data.length} projects`,
+  games: `${games.length} projects · ${onSteam} on Steam`,
+  tools: `${tools.length} projects`,
+};
 ---
 <Base title="KazooKat" description="KazooKat's portfolio: data and finance projects, games on Steam, and tools.">
   <Desk counts={counts} />

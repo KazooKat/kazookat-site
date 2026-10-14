@@ -1,0 +1,37 @@
+---
+import type { Category } from '../lib/projects';
+import '../styles/sprites.css';
+
+interface Props { current?: Category }
+const { current } = Astro.props;
+const tabs: { cat: Category; label: string }[] = [
+  { cat: 'data', label: 'Data & Finance' },
+  { cat: 'games', label: 'Games' },
+  { cat: 'tools', label: 'Tools & Mods' },
+];
+---
+<header class="site-header">
+  <a class="logo px" href="/">
+    <span class="spr head-sprite" aria-hidden="true"></span>
+    <span>KazooKat</span>
+  </a>
+  <nav aria-label="Categories">
+    <a class="back px" href="/">← Desk</a>
+    {tabs.map((t) => (
+      <a class="tab px" href={`/${t.cat}`} aria-current={t.cat === current ? 'page' : undefined}>{t.label}</a>
+    ))}
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap;
+    padding: 12px max(16px, calc((100% - 1100px) / 2)); background: var(--paper-2);
+    border-bottom: 4px solid var(--ink);
+  }
+  .logo { --u: 3px; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; text-decoration: none; }
+  nav { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 16px; }
+  nav a { text-decoration: none; padding: 2px 0; border-bottom: 3px solid transparent; color: var(--muted); }
+  nav a:hover { color: var(--ink); }
+  nav a[aria-current='page'] { color: var(--accent-ink); border-color: var(--accent); }
+</style>

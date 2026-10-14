@@ -8,7 +8,6 @@ stats:
   - { value: "60 Hz", label: "deterministic simulation" }
 facts:
   - Races run 3 to 30 minutes, with your pick of circuit, grid size, AI difficulty, weather and damage.
-  - The simulation is deterministic, so the same inputs give the same race.
   - Built in Godot 4.7 with GDScript.
 tags: [Godot, GDScript, Simulation]
 media:

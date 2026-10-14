@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "node scripts/build-id.mjs",
     "build": "astro build",
-    "postbuild": "node scripts/check-build.mjs",
+    "postbuild": "node scripts/check-build.mjs index.html data.html games.html tools.html 404.html",
     "dev": "astro dev",
     "preview": "astro preview",
     "check:copy": "node scripts/check-copy.mjs",

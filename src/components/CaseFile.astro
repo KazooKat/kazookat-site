@@ -1,0 +1,80 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { entry: CollectionEntry<'projects'>; flip: boolean; eager?: boolean }
+const { entry, flip, eager = false } = Astro.props;
+const { title, summary, stats, facts, tags, links, media, status } = entry.data;
+---
+<article class:list={['case', { flip }]} id={entry.id}>
+  <div class="media">
+    {media.image ? (
+      <div class="frame">
+        <Image src={media.image} alt={media.alt ?? ''} widths={[480, 720, 960]} sizes="(max-width: 760px) 100vw, 540px" loading={eager ? 'eager' : 'lazy'} />
+      </div>
+    ) : (
+      <div class="frame panel">
+        {media.panel?.map((p) => (
+          <div class="panel-row"><span class="big">{p.value}</span><span class="small">{p.label}</span></div>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <div class="text">
+    <h2 class="px">{title}</h2>
+    {status && <p class="status px">{status}</p>}
+    <p class="summary">{summary}</p>
+    {stats.length > 0 && (
+      <div class="stats">
+        {stats.map((s) => (
+          <div><span class="big">{s.value}</span><span class="small">{s.label}</span></div>
+        ))}
+      </div>
+    )}
+    <ul class="facts">{facts.map((f) => <li>{f}</li>)}</ul>
+    <ul class="tags" aria-label="Tools used">{tags.map((t) => <li>{t}</li>)}</ul>
+    {links.length > 0 && (
+      <div class="links">
+        {links.map((l, i) => (
+          <div class="link">
+            <a class:list={["btn", { pri: i === 0 }]} href={l.url} target="_blank" rel="noopener noreferrer">{l.label}</a>
+            {l.note && <span class="note">{l.note}</span>}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</article>
+
+<style>
+  .case { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: center; padding: 30px 0; }
+  .case.flip .media { order: 2; }
+  .frame { position: relative; border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); background: #fff; overflow: hidden; aspect-ratio: 16 / 10; }
+  .frame :global(img), .frame video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .frame video { position: absolute; inset: 0; }
+  .panel { display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 24px 28px; background: var(--card); }
+  .panel-row { display: flex; flex-direction: column; }
+  h2 { margin: 0 0 4px; font-size: 28px; line-height: 1.15; }
+  .status { display: inline-block; margin: 2px 0 8px; padding: 2px 10px; font-size: 14px; background: var(--ink); color: #ffd166; }
+  .summary { margin: 4px 0 10px; font-size: 17px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 6px 0 4px; }
+  .stats > div { display: flex; flex-direction: column; }
+  .big { font-size: 30px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.05; color: var(--accent-ink); font-variant-numeric: tabular-nums; }
+  .small { font-size: 13px; color: var(--muted); max-width: 26ch; }
+  .facts { margin: 10px 0 12px; padding-left: 20px; font-size: 15px; }
+  .facts li + li { margin-top: 4px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .tags li { font-size: 13px; padding: 2px 8px; background: var(--tag); }
+  .links { display: flex; flex-wrap: wrap; gap: 14px 12px; margin-top: 14px; }
+  .link { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+  .btn { display: inline-block; font-weight: 700; font-size: 15px; letter-spacing: .01em; padding: 6px 14px; background: var(--card); color: var(--ink); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); text-decoration: none; }
+  .btn.pri { background: var(--accent-ink); color: var(--card); }
+  .btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+  .btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+  .note { font-size: 12px; color: var(--muted); }
+  @media (max-width: 760px) {
+    .case { grid-template-columns: 1fr; gap: 18px; padding: 22px 0; }
+    .case.flip .media { order: 0; }
+  }
+</style>

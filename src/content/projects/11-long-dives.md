@@ -9,7 +9,6 @@ stats:
 facts:
   - Trade on a live order book, sail voyages on a map, and keep the base running while you're away with full offline progress.
   - Written in Rust with egui.
-  - Shipped on Steam on Aug 30, 2026 at $7.99.
 tags: [Rust, egui, Pixel art, Steam]
 links:
   - { label: Steam, url: "https://store.steampowered.com/app/5056760/" }
