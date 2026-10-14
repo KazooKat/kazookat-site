@@ -43,7 +43,7 @@ test('shizuoka shows a number panel, a private badge and no links', async ({ pag
   await page.goto('/data');
   const row = page.locator('.case', { hasText: 'Shizuoka' });
   await expect(row.locator('.panel')).toContainText('¥3.97bn');
-  await expect(row.locator('.status')).toHaveText('Private engagement, not published');
+  await expect(row.locator('.status')).toHaveText('Private engagement');
   await expect(row.locator('.links a')).toHaveCount(0);
 });
 

@@ -1,12 +1,22 @@
 ---
 import '../styles/tokens.css';
 import build from '../build-id.json';
+// Self-hosted pixel font: preloaded and shown with font-display: block, so headings never
+// swap fonts after first paint (that swap re-wrapped the header and shifted the page).
+import pixel500 from '@fontsource/pixelify-sans/files/pixelify-sans-latin-500-normal.woff2?url';
+import pixel700 from '@fontsource/pixelify-sans/files/pixelify-sans-latin-700-normal.woff2?url';
 
 interface Props {
   title: string;
   description: string;
 }
 const { title, description } = Astro.props;
+const fontFaces = [
+  [pixel500, 500],
+  [pixel700, 700],
+]
+  .map(([src, weight]) => `@font-face{font-family:"Pixelify Sans";src:url(${src}) format("woff2");font-weight:${weight};font-display:block}`)
+  .join('');
 ---
 <!doctype html>
 <html lang="en">
@@ -17,9 +27,9 @@ const { title, description } = Astro.props;
     <meta name="description" content={description} />
     <meta name="build" content={build.id} />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&display=swap" rel="stylesheet" />
+    <link rel="preload" href={pixel700} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={pixel500} as="font" type="font/woff2" crossorigin />
+    <style is:inline set:html={fontFaces}></style>
   </head>
   <body>
     <slot />

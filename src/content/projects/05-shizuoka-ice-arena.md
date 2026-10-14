@@ -13,5 +13,5 @@ media:
     - { value: "¥3.97bn", label: "capex" }
     - { value: "¥322M", label: "stabilised revenue a year" }
     - { value: "GO", label: "as a public-private partnership" }
-status: Private engagement, not published
+status: Private engagement
 ---
