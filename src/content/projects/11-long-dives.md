@@ -14,6 +14,7 @@ links:
   - { label: Steam, url: "https://store.steampowered.com/app/5056760/" }
 media:
   image: ./media/long-dives.png
+  video: /media/long-dives.mp4
   alt: Long Dives base screen with rows of generators, drills and kelp farms across depths
 status: On Steam since Aug 30, 2026
 ---

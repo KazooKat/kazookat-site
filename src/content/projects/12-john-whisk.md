@@ -12,6 +12,7 @@ links:
   - { label: Wishlist on Steam, url: "https://store.steampowered.com/app/5172270/" }
 media:
   image: ./media/john-whisk.png
+  video: /media/john-whisk.mp4
   alt: John Whisk fighting the King Cabbage boss on floor 10
 status: Coming to Steam Oct 2026
 ---

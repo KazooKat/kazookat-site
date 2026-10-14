@@ -1,14 +1,22 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props { entry: CollectionEntry<'projects'>; flip: boolean; eager?: boolean }
 const { entry, flip, eager = false } = Astro.props;
 const { title, summary, stats, facts, tags, links, media, status } = entry.data;
+// The schema guarantees a video always comes with an image to use as its poster.
+const poster = media.video && media.image ? await getImage({ src: media.image, width: 960, format: 'webp' }) : undefined;
 ---
 <article class:list={['case', { flip }]} id={entry.id}>
   <div class="media">
-    {media.image ? (
+    {media.video && poster ? (
+      <div class="frame">
+        <video class="clip" muted loop playsinline preload="none" poster={poster.src} aria-label={media.alt}>
+          <source src={media.video} type="video/mp4" />
+        </video>
+      </div>
+    ) : media.image ? (
       <div class="frame">
         <Image src={media.image} alt={media.alt ?? ''} widths={[480, 720, 960]} sizes="(max-width: 760px) 100vw, 540px" loading={eager ? 'eager' : 'lazy'} />
       </div>
@@ -46,6 +54,25 @@ const { title, summary, stats, facts, tags, links, media, status } = entry.data;
     )}
   </div>
 </article>
+
+<script>
+  // Play clips only while they are on screen, and never when the visitor asked for reduced motion.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clips = document.querySelectorAll<HTMLVideoElement>('video.clip');
+  if (!reduce && clips.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) v.play().catch(() => {});
+          else v.pause();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    clips.forEach((v) => io.observe(v));
+  }
+</script>
 
 <style>
   .case { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: center; padding: 30px 0; }
