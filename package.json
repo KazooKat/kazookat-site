@@ -1,0 +1,24 @@
+{
+  "name": "kazookat-site",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=22.12.0" },
+  "scripts": {
+    "prebuild": "node scripts/build-id.mjs",
+    "build": "astro build",
+    "postbuild": "node scripts/check-build.mjs",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "check:copy": "node scripts/check-copy.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "test:e2e": "playwright test",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "dependencies": {
+    "astro": "^7.3.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "wrangler": "^4.151.0"
+  }
+}

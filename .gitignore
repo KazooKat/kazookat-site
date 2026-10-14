@@ -7,3 +7,8 @@ dist/
 *.log
 .DS_Store
 tools/sprites/__pycache__/
+public/build.txt
+src/build-id.json
+.superpowers/
+test-results/
+playwright-report/

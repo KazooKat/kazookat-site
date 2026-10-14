@@ -1,0 +1,12 @@
+{
+  "name": "kazookat-site",
+  "compatibility_date": "2026-10-14",
+  // Assets-only Worker: no main script, Astro's dist/ is served as-is.
+  "assets": {
+    "directory": "./dist/",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  // Apex only. luma.kazookat.dev is a separate Worker and must not be routed here.
+  "routes": [{ "pattern": "kazookat.dev", "custom_domain": true }]
+}
