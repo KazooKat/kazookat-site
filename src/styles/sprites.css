@@ -1,0 +1,17 @@
+/* A sprite is one PNG frame strip with one frame visible, scaled by a whole number (--u).
+   Set --w, --h (frame size in art pixels), --n (frame count) and background-image.
+   Animate frames with `play` and --from/--to; never rotate or scale a sprite. */
+.spr {
+  --fw: calc(var(--w) * var(--u));
+  width: var(--fw);
+  height: calc(var(--h) * var(--u));
+  background-repeat: no-repeat;
+  background-size: calc(var(--fw) * var(--n)) 100%;
+  background-position: 0 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+@keyframes play { from { background-position-x: var(--from); } to { background-position-x: var(--to); } }
+
+.me { --w: 29; --h: 33; --n: 2; background-image: url(/sprites/me.png); }
+.head-sprite { --w: 24; --h: 17; --n: 1; background-image: url(/sprites/head.png); }

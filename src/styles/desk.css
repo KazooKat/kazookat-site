@@ -1,0 +1,68 @@
+.scene { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 48px 16px 24px; --label-h: 76px; }
+
+.head { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.title {
+  margin: 0; font-family: var(--pixel-font); font-weight: 700;
+  font-size: clamp(56px, 13vw, 176px); line-height: .9; letter-spacing: .02em;
+  text-shadow: .05em .05em 0 var(--accent); user-select: none;
+}
+.title span { display: inline-block; animation: pop .5s steps(4) both; animation-delay: calc(var(--i) * 70ms); }
+@keyframes pop { 0% { transform: translateY(.2em); } 60% { transform: translateY(-.06em); } 100% { transform: none; } }
+.sub { margin: 0; font-family: var(--pixel-font); font-weight: 500; font-size: clamp(16px, 2.2vw, 26px); color: var(--muted); text-align: center; animation: fadeup .4s steps(4) .7s both; }
+.sub .open { display: inline-block; margin-left: 4px; padding: 2px 10px; background: var(--accent); color: var(--card); box-shadow: 3px 3px 0 var(--ink); }
+@keyframes fadeup { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.items { position: relative; margin-top: calc(var(--u) * 8); display: flex; align-items: flex-end; justify-content: center; gap: calc(var(--u) * 12); padding: 0 calc(var(--u) * 8); }
+.items::before { /* the desk */
+  content: ""; position: absolute; left: 0; right: 0; bottom: var(--label-h);
+  height: calc(var(--u) * 5);
+  background: linear-gradient(var(--wood-hi) 0 var(--u), var(--wood) var(--u) calc(100% - var(--u)), var(--wood-sh) calc(100% - var(--u)));
+  border-top: var(--u) solid var(--ink); border-bottom: var(--u) solid var(--ink);
+  border-radius: var(--u);
+}
+.col { position: relative; }
+.obj { position: relative; display: flex; flex-direction: column; align-items: center; text-decoration: none; color: inherit; outline: none; -webkit-tap-highlight-color: transparent; }
+.art { position: relative; display: flex; align-items: flex-end; }
+.gap { height: calc(var(--u) * 5); }
+.label { height: var(--label-h); padding-top: 14px; text-align: center; font-family: var(--pixel-font); font-size: 22px; font-weight: 700; }
+.label small { display: block; font-family: system-ui, sans-serif; font-weight: 400; font-size: 13px; color: var(--muted); margin-top: 4px; }
+.label::after { content: ""; display: block; height: 4px; margin: 6px auto 0; width: 0; background: var(--accent); transition: width .2s steps(4); }
+.obj:is(:hover, :focus-visible, :active) .label { color: var(--accent-ink); }
+.obj:is(:hover, :focus-visible, :active) .label::after { width: 60%; }
+.obj:focus-visible .art { outline: 3px dashed var(--accent); outline-offset: 8px; }
+
+/* monitor: chart grows through 5 drawn frames, LED blinks */
+.mon { --w: 36; --h: 31; --n: 5; background-image: url(/sprites/monitor.png); }
+.obj-data:is(:hover, :focus-visible, :active) .mon { --from: 0px; --to: calc(var(--fw) * -4); animation: play .32s steps(4) forwards; }
+.led { position: absolute; inset: 0; --w: 36; --h: 31; --n: 1; background-image: url(/sprites/monitor-led.png); opacity: 0; }
+.obj-data:is(:hover, :focus-visible, :active) .led { animation: blink .5s steps(1) .32s infinite; }
+@keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } }
+
+/* gamepad: hops a pixel at a time, presses each button, sparkles */
+.pad { --w: 40; --h: 30; --n: 5; background-image: url(/sprites/gamepad.png); }
+.obj-games:is(:hover, :focus-visible, :active) .pad {
+  --from: calc(var(--fw) * -1); --to: calc(var(--fw) * -5);
+  animation: play .72s steps(4) infinite, hop .36s steps(1) infinite;
+}
+@keyframes hop { 0% { transform: translateY(calc(var(--u) * -2)); } 50% { transform: translateY(calc(var(--u) * -1)); } }
+
+/* toolbox: lid flips back, tools come up */
+.box { --w: 38; --h: 40; --n: 4; background-image: url(/sprites/toolbox.png); }
+.obj-tools:is(:hover, :focus-visible, :active) .box { --from: 0px; --to: calc(var(--fw) * -3); animation: play .3s steps(3) forwards; }
+
+/* KazooKat_ stands on the desk, waves now and then, and keeps waving while an object is active */
+.me-col { align-self: flex-end; margin-bottom: calc(var(--label-h) + var(--u) * 5); margin-right: calc(var(--u) * -6); }
+.scene .me { animation: idlewave 5s infinite; }
+@keyframes idlewave { 0%, 88% { background-position-x: 0; } 89%, 97% { background-position-x: calc(var(--fw) * -1); } }
+.items:has(.obj:is(:hover, :focus-visible, :active)) .me { animation: wave .5s steps(1) infinite; }
+@keyframes wave { 0% { background-position-x: calc(var(--fw) * -1); } 50% { background-position-x: 0; } }
+
+/* phones: stack the three, each on its own shelf */
+@media (max-width: 640px) {
+  .scene { --u: 4px; --label-h: 64px; }
+  .items { flex-direction: column; align-items: center; gap: 28px; margin-top: calc(var(--u) * 8); padding: 0; }
+  .items::before { display: none; }
+  .col { width: 100%; display: flex; justify-content: center; }
+  .obj .gap { width: calc(var(--u) * 50); background: linear-gradient(var(--wood-hi) 0 var(--u), var(--wood) var(--u) calc(100% - var(--u)), var(--wood-sh) calc(100% - var(--u))); border-top: var(--u) solid var(--ink); border-bottom: var(--u) solid var(--ink); border-radius: var(--u); }
+  .me-col { display: none; }
+}

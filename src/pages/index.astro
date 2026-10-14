@@ -1,6 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
+import Desk from '../components/Desk.astro';
+
+// Hard-coded until the project collection exists (Task 5 reads these from it).
+const counts = { data: '7 projects', games: '3 projects · 2 on Steam', tools: '3 projects' };
 ---
-<Base title="KazooKat" description="Portfolio of KazooKat: data and finance projects, games, and tools.">
-  <main>KazooKat</main>
+<Base title="KazooKat" description="KazooKat's portfolio: data and finance projects, games on Steam, and tools.">
+  <Desk counts={counts} />
 </Base>

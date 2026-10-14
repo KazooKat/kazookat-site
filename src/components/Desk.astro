@@ -1,0 +1,41 @@
+---
+import '../styles/sprites.css';
+import '../styles/desk.css';
+
+interface Props {
+  counts: { data: string; games: string; tools: string };
+}
+const { counts } = Astro.props;
+const letters = [...'KazooKat'];
+---
+<main class="scene">
+  <div class="head">
+    <h1 class="title" aria-label="KazooKat">{letters.map((l, i) => <span aria-hidden="true" style={`--i:${i}`}>{l}</span>)}</h1>
+    <p class="sub">BS Data Science &amp; BBA Finance Grad.{" "}<span class="open">Open to Employment</span></p>
+  </div>
+
+  <nav class="items" aria-label="Project categories">
+    <div class="col me-col" aria-hidden="true"><div class="spr me"></div></div>
+    <div class="col">
+      <a class="obj obj-data" href="/data">
+        <div class="art"><div class="spr mon"></div><div class="spr led"></div></div>
+        <div class="gap"></div>
+        <span class="label">Data &amp; Finance<small>{counts.data}</small></span>
+      </a>
+    </div>
+    <div class="col">
+      <a class="obj obj-games" href="/games">
+        <div class="art"><div class="spr pad"></div></div>
+        <div class="gap"></div>
+        <span class="label">Games<small>{counts.games}</small></span>
+      </a>
+    </div>
+    <div class="col">
+      <a class="obj obj-tools" href="/tools">
+        <div class="art"><div class="spr box"></div></div>
+        <div class="gap"></div>
+        <span class="label">Tools &amp; Mods<small>{counts.tools}</small></span>
+      </a>
+    </div>
+  </nav>
+</main>
