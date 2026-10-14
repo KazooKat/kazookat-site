@@ -16,5 +16,6 @@ links:
   - { label: Code, url: "https://github.com/KazooKat/credit-risk-ml" }
 media:
   image: ./media/credit-roc.png
+  fit: contain
   alt: ROC curves with the random forest (AUC 0.776) above logistic regression (AUC 0.708)
 ---

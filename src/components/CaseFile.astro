@@ -15,9 +15,10 @@ const poster = media.video && media.image ? await getImage({ src: media.image, w
         <video class="clip" muted loop playsinline preload="none" poster={poster.src} aria-label={media.alt}>
           <source src={media.video} type="video/mp4" />
         </video>
+        <button class="clip-toggle" type="button" aria-label="Play clip"><span aria-hidden="true">▶</span></button>
       </div>
     ) : media.image ? (
-      <div class="frame">
+      <div class:list={['frame', { contain: media.fit === 'contain' }]}>
         <Image src={media.image} alt={media.alt ?? ''} widths={[480, 720, 960]} sizes="(max-width: 760px) 100vw, 540px" loading={eager ? 'eager' : 'lazy'} />
       </div>
     ) : (
@@ -56,16 +57,31 @@ const poster = media.video && media.image ? await getImage({ src: media.image, w
 </article>
 
 <script>
-  // Play clips only while they are on screen, and never when the visitor asked for reduced motion.
+  // Clips play while on screen, never by themselves with reduced motion, and a manual
+  // pause sticks: scrolling away and back does not restart a clip the visitor stopped.
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const clips = document.querySelectorAll<HTMLVideoElement>('video.clip');
+  clips.forEach((v) => {
+    const btn = v.parentElement!.querySelector<HTMLButtonElement>('.clip-toggle')!;
+    const icon = btn.querySelector('span')!;
+    const sync = () => {
+      btn.setAttribute('aria-label', v.paused ? 'Play clip' : 'Pause clip');
+      icon.textContent = v.paused ? '▶' : '❚❚';
+    };
+    v.addEventListener('play', sync);
+    v.addEventListener('pause', sync);
+    btn.addEventListener('click', () => {
+      if (v.paused) { v.dataset.userPaused = ''; v.play().catch(() => {}); }
+      else { v.dataset.userPaused = '1'; v.pause(); }
+    });
+  });
   if (!reduce && clips.length && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           const v = e.target as HTMLVideoElement;
-          if (e.isIntersecting) v.play().catch(() => {});
-          else v.pause();
+          if (e.isIntersecting && !v.dataset.userPaused) v.play().catch(() => {});
+          else if (!e.isIntersecting) v.pause();
         }
       },
       { threshold: 0.4 },
@@ -80,6 +96,9 @@ const poster = media.video && media.image ? await getImage({ src: media.image, w
   .frame { position: relative; border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); background: #fff; overflow: hidden; aspect-ratio: 16 / 10; }
   .frame :global(img), .frame video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
   .frame video { position: absolute; inset: 0; }
+  .clip-toggle { position: absolute; left: 10px; bottom: 10px; width: 40px; height: 36px; display: grid; place-items: center; font: 700 14px/1 system-ui, sans-serif; color: var(--card); background: var(--ink); border: 3px solid var(--card); box-shadow: 3px 3px 0 var(--ink); cursor: pointer; }
+  .clip-toggle:hover { background: var(--accent-ink); }
+  .frame.contain :global(img) { object-fit: contain; padding: 8px; }
   .panel { display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 24px 28px; background: var(--card); }
   .panel-row { display: flex; flex-direction: column; }
   h2 { margin: 0 0 4px; font-size: 28px; line-height: 1.15; }

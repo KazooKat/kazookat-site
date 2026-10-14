@@ -23,6 +23,8 @@ const projects = defineCollection({
           // Muted loop served from public/, e.g. /media/long-dives.mp4. Needs an image as its poster.
           video: z.string().startsWith('/media/').optional(),
           alt: z.string().optional(),
+          // 'contain' shows charts whole on white; screenshots default to a top-anchored crop.
+          fit: z.enum(['cover', 'contain']).default('cover'),
           // Big-number panel for projects with nothing to screenshot.
           panel: z.array(stat).min(1).max(3).optional(),
         })

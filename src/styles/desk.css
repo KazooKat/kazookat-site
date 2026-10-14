@@ -1,4 +1,4 @@
-.scene { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 48px 16px 24px; --label-h: 76px; }
+.scene { --u: 6px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 48px 16px 24px; --label-h: 76px; }
 
 .head { display: flex; flex-direction: column; align-items: center; gap: 18px; }
 .title {
@@ -29,7 +29,7 @@
 .label::after { content: ""; display: block; height: 4px; margin: 6px auto 0; width: 0; background: var(--accent); transition: width .2s steps(4); }
 .obj:is(:hover, :focus-visible, :active) .label { color: var(--accent-ink); }
 .obj:is(:hover, :focus-visible, :active) .label::after { width: 60%; }
-.obj:focus-visible .art { outline: 3px dashed var(--accent); outline-offset: 8px; }
+.obj:focus-visible .art { outline: 3px dashed var(--accent-ink); outline-offset: 8px; }
 
 /* monitor: chart grows through 5 drawn frames, LED blinks */
 .mon { --w: 36; --h: 31; --n: 5; background-image: url(/sprites/monitor.png); }
@@ -57,8 +57,12 @@
 .items:has(.obj:is(:hover, :focus-visible, :active)) .me { animation: wave .5s steps(1) infinite; }
 @keyframes wave { 0% { background-position-x: calc(var(--fw) * -1); } 50% { background-position-x: 0; } }
 
-/* phones: stack the three, each on its own shelf */
-@media (max-width: 640px) {
+/* The desk is about 189 art pixels wide plus labels, so the pixel size steps down with the window. */
+@media (max-width: 1199px) { .scene { --u: 5px; } }
+@media (max-width: 999px) { .scene { --u: 4px; } }
+
+/* narrower than the desk at 4px: stack the three, each on its own shelf */
+@media (max-width: 880px) {
   .scene { --u: 4px; --label-h: 64px; }
   .items { flex-direction: column; align-items: center; gap: 28px; margin-top: calc(var(--u) * 8); padding: 0; }
   .items::before { display: none; }

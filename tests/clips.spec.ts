@@ -39,3 +39,20 @@ test('clips stay paused with reduced motion', async ({ page }) => {
   await page.waitForTimeout(1500);
   expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
 });
+
+test('clips have a pause button that keeps them paused', async ({ page }) => {
+  await page.goto('/games');
+  const row = page.locator('.case', { hasText: 'John Whisk' });
+  const video = row.locator('video');
+  const btn = row.getByRole('button', { name: /pause/i });
+  await video.scrollIntoViewIfNeeded();
+  await expect.poll(() => video.evaluate((v: HTMLVideoElement) => !v.paused), { timeout: 8000 }).toBe(true);
+  await btn.focus();
+  await page.keyboard.press('Enter');
+  await expect(row.getByRole('button', { name: /play/i })).toBeVisible();
+  await page.mouse.wheel(0, 2000);
+  await page.waitForTimeout(500);
+  await video.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1200);
+  expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+});

@@ -78,3 +78,19 @@ test('desk counts come from the collection', async ({ page }) => {
   await expect(page.locator('.obj-games small')).toHaveText('3 projects · 2 on Steam');
   await expect(page.locator('.obj-tools small')).toHaveText('3 projects');
 });
+
+test('charts are shown whole, not cropped', async ({ page }) => {
+  await page.goto('/data');
+  for (const name of ['Credit Default Prediction', 'RAM Price Outlook']) {
+    const img = page.locator('.case', { hasText: name }).locator('img');
+    expect(await img.evaluate((i) => getComputedStyle(i).objectFit), name).toBe('contain');
+  }
+});
+
+test('copy matches the sources', async ({ page }) => {
+  await page.goto('/data');
+  await expect(page.locator('.case', { hasText: 'Idle Game Market Analysis' })).not.toContainText('Reddit');
+  const steam = page.locator('.case', { hasText: 'Steam Games Analysis' });
+  await expect(steam).toContainText('400');
+  await expect(steam).not.toContainText('1,000+');
+});

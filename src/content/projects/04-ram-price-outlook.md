@@ -15,5 +15,6 @@ links:
   - { label: Report, url: "https://github.com/KazooKat/ram-price-outlook" }
 media:
   image: ./media/ram.png
+  fit: contain
   alt: Chart of 32GB DDR5 kit prices since 2023 with fast, base and slow forecasts falling back to $111
 ---

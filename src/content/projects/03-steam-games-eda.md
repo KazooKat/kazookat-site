@@ -2,12 +2,12 @@
 title: Steam Games Analysis
 category: data
 order: 3
-summary: What makes a Steam game succeed. Python analysis and a live dashboard on 1,000+ top Steam games.
+summary: What makes a Steam game succeed. Python analysis and a live dashboard on the 400 most-owned Steam games.
 stats:
   - { value: "92% vs 81%", label: "positive reviews, paid vs free-to-play" }
-  - { value: "1,000+", label: "top Steam games from SteamSpy" }
+  - { value: "400", label: "most-owned Steam games analysed" }
 facts:
-  - Pulled and cleaned live data from the SteamSpy API with pandas.
+  - Pulled the 1,000 most-owned games from the SteamSpy API, then added genres and tags for the top 400.
   - Action is the most common genre at 72% of titles, and it is not the highest rated.
   - The dashboard filters by genre, price, and review count.
 tags: [Python, pandas, Plotly, Streamlit]
