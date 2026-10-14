@@ -1,7 +1,7 @@
 ---
 title: Spaceship Generator
 category: tools
-order: 3
+order: 5
 summary: Procedurally generates Minecraft spaceships and exports them as Litematica schematic files.
 facts:
   - Pick a seed and a block palette, and get a ship you can paste into your world.

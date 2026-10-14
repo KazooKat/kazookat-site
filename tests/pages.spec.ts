@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const cats = [
   { path: '/data', title: 'Data & Finance', first: 'Equity DCF', last: 'Hiking Game Research', n: 7 },
   { path: '/games', title: 'Games', first: 'Long Dives', last: 'Chequered Flag', n: 3 },
-  { path: '/tools', title: 'Tools & Mods', first: 'Tarkov Quest Router', last: 'Spaceship Generator', n: 3 },
+  { path: '/tools', title: 'Tools & Mods', first: 'Tarkov Quest Router', last: 'Spaceship Generator', n: 5 },
 ];
 
 for (const c of cats) {
@@ -76,7 +76,7 @@ test('desk counts come from the collection', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.obj-data small')).toHaveText('7 projects');
   await expect(page.locator('.obj-games small')).toHaveText('3 projects · 2 on Steam');
-  await expect(page.locator('.obj-tools small')).toHaveText('3 projects');
+  await expect(page.locator('.obj-tools small')).toHaveText('5 projects');
 });
 
 test('charts are shown whole, not cropped', async ({ page }) => {
@@ -93,4 +93,16 @@ test('copy matches the sources', async ({ page }) => {
   const steam = page.locator('.case', { hasText: 'Steam Games Analysis' });
   await expect(steam).toContainText('400');
   await expect(steam).not.toContainText('1,000+');
+});
+
+test('tools page includes both Minecraft mods in order', async ({ page }) => {
+  await page.goto('/tools');
+  await expect(page.locator('.case h2')).toHaveText([
+    'Tarkov Quest Router', 'Luma Guide', 'Private Vault Overview', 'Custom Item Highlighter', 'Spaceship Generator',
+  ]);
+  const hl = page.locator('.case', { hasText: 'Custom Item Highlighter' });
+  await expect(hl.locator('.panel')).toBeVisible();
+  await expect(hl.locator('.links a').first()).toHaveAttribute('href', 'https://github.com/KazooKat/sortmod/releases');
+  const pvo = page.locator('.case', { hasText: 'Private Vault Overview' });
+  await expect(pvo.locator('.links a').first()).toHaveAttribute('href', 'https://github.com/KazooKat/private-vault-overview/releases');
 });
